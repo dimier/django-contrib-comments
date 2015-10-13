@@ -67,11 +67,11 @@ class BaseCommentNode(template.Node):
         self.comment = comment
 
     def render(self, context):
-        qs = self.get_queryset(context)
+        qs = self.get_query_set(context)
         context[self.as_varname] = self.get_context_value_from_queryset(context, qs)
         return ''
 
-    def get_queryset(self, context):
+    def get_query_set(self, context):
         ctype, object_pk = self.get_target_ctype_pk(context)
         if not object_pk:
             return self.comment_model.objects.none()
@@ -218,7 +218,7 @@ class RenderCommentListNode(CommentListNode):
                 "comments/%s/list.html" % ctype.app_label,
                 "comments/list.html"
             ]
-            qs = self.get_queryset(context)
+            qs = self.get_query_set(context)
             # Django 1.6 does not have context.flatten().
             context_dict = {}
             for d in context.dicts:
